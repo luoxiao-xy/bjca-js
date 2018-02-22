@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "alwaysStrict": true,           /* Parse in strict mode and emit "use strict" for each source file. */
+    "declaration": true,            /* Generates corresponding '.d.ts' file. */
+    "module": "amd",           /* Specify module code generation: 'commonjs', 'amd', 'system', 'umd' or 'es2015'. */
+    "newLine": "lf",
+    // "outDir": "./dist", 
+    "outFile": "./dist/bjca.js",
+    "pretty": true,
+    "strict": true,                 /* Enable all strict type-checking options. */
+    // "noImplicitAny": false,
+    // "noImplicitThis": false,
+    "target": "ES2015"              /* 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "asset/",
+    "dist/",
+    "test/",
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}
