@@ -28,15 +28,15 @@ export default class RxWebsocketSubject<T> extends Subject<T> {
         distinctUntilChanged(),
       )
 
-    if (!resultSelector) {
+    if (! this.resultSelector) {
       this.resultSelector = this.defaultResultSelector
     }
-    if (!this.serializer) {
+    if (! this.serializer) {
       this.serializer = this.defaultSerializer
     }
 
     this.wsSubjectConfig = {
-      url,
+      url: this.url,
       closeObserver: {
         next: (ev: CloseEvent) => {
           this.socketSub = null
