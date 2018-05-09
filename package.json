@@ -1,24 +1,30 @@
 {
-  "name": "npm-base",
+  "name": "bjca",
   "author": "waiting",
   "version": "0.0.1",
-  "description": "npm boilerplate",
-  "keywords": [],
+  "description": "bjca ECAMScript for mordern browser",
+  "keywords": [
+    "ca",
+    "certificate",
+    "sign",
+    "SM2",
+    "SM4"
+  ],
   "engines": {
     "node": ">=8.10.0"
   },
-  "browser": "",
-  "es2015": "./dist/index.esm.js",
+  "browser": "./dist/bjca.esm.js",
+  "es2015": "./dist/bjca.esm.js",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bugs": {
-    "url": "https://github.com/waitingsong/npm-base/issues"
+    "url": "https://github.com/waitingsong/bjca/issues"
   },
-  "homepage": "https://github.com/waitingsong/npm-base#readme",
+  "homepage": "https://github.com/waitingsong/bjca#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/waitingsong/npm-base.git"
+    "url": "git+https://github.com/waitingsong/bjca.git"
   },
   "license": "MIT",
   "nyc": {
@@ -61,11 +67,15 @@
     "rollup-plugin-commonjs": "^9.1.0",
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-uglify": "^3.0.0",
+    "rxjs": "^6.1.0",
     "source-map-support": "^0.5.4",
     "ts-node": "^5.0.1",
     "tslint": "^5.9.1",
     "tslint-eslint-rules": "^5.1.0",
     "typescript": "^2.8.1"
+  },
+  "peerDependencies": {
+    "rxjs": "^6.1.0"
   },
   "scripts": {
     "bp:add": "git remote add bp https://github.com/waitingsong/npm-base",
