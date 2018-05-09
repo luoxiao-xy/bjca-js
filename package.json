@@ -8,7 +8,11 @@
     "certificate",
     "sign",
     "SM2",
-    "SM4"
+    "SM4",
+    "rxjs",
+    "数字证书",
+    "数字认证",
+    "国密"
   ],
   "engines": {
     "node": ">=8.10.0"
