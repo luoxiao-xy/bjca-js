@@ -83,6 +83,7 @@ export class Bjca {
     this.wsSubject && this.wsSubject.unsubscribe()
     this.keppAliveSub && this.keppAliveSub.unsubscribe()
     this.keppAliveSub = this.wsSub = this.wsSubject = null
+    this.clearMsgEvent()
 
     this.subject.next({ ...initialWsEvent, action: Actions.wsDisconnected })
   }
