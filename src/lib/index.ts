@@ -224,6 +224,11 @@ export class Bjca {
       .then(ret => ret === 'true' ? true : false)
   }
 
+  getUserPINRetryCount(certId: CertId): Promise<number> {
+    return this.sendMsg(SrvMethod.getUserPINRetryCount, certId)
+      .then(ret => +ret)
+  }
+
   /* -------- private --------------- */
 
   private sendMsg(methodName: WsSendData['xtx_func_name'], args?: SendArgs): Promise <string> {

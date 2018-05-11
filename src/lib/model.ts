@@ -64,13 +64,14 @@ export interface WsEvent {
 
 // ws服务端调用方法
 export enum SrvMethod {
-  changeUserPIN = 'SOF_ChangePassWd',  // 修改用户口令
+  changeUserPIN = 'SOF_ChangePassWd',  // 修改用户证书口令
   genRandom = 'SOF_GenRandom',  // 获取服务器提供的随机数
   getCertEntity = 'SOF_GetCertEntity',  // 获取证书唯一标识
   getCertInfo = 'SOF_GetCertInfo',  // 获取证书信息
   getDeviceInfo = 'GetDeviceInfo',  // 设备信息
   getSignCert = 'SOF_ExportUserCert',
   getUserList = 'SOF_GetUserList',  // 用户列表
+  getUserPINRetryCount = 'SOF_GetPinRetryCount',  // 获取证书密码剩余重试次数
   getVersion = 'SOF_GetVersion',
   signData = 'SOF_SignData',  // 签名
   validateCert = 'SOF_ValidateCert',  // 验证证书有效性
