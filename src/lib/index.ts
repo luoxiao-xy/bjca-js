@@ -219,6 +219,11 @@ export class Bjca {
     return this.sendMsg(SrvMethod.signData, [certId, plain])
   }
 
+  changeUserPIN(certId: CertId, oldStr: string, newStr: string): Promise<boolean> {
+    return this.sendMsg(SrvMethod.changeUserPIN, [certId, oldStr, newStr])
+      .then(ret => ret === 'true' ? true : false)
+  }
+
   /* -------- private --------------- */
 
   private sendMsg(methodName: WsSendData['xtx_func_name'], args?: SendArgs): Promise <string> {
