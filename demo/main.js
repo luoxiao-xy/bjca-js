@@ -1,7 +1,7 @@
 require.config({
   baseUrl: '../dist',
   paths:   {
-    'bjca': 'index.umd.min',
+    'bjca': 'bjca.umd.min',
     'jquery': '../demo/jquery-3.3.1.min',
     'moment': '../demo/moment-with-locales.min',
   },
