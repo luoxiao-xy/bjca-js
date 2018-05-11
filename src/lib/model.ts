@@ -65,13 +65,13 @@ export interface WsEvent {
 // ws服务端调用方法
 export enum SrvMethod {
   changeUserPIN = 'SOF_ChangePassWd',  // 修改用户口令
-  getCertEntity = 'SOF_GetCertEntity',  // 获取证书唯一标识
-  getDeviceInfo = 'GetDeviceInfo',  // 设备信息
   genRandom = 'SOF_GenRandom',  // 获取服务器提供的随机数
-  getSignCert = 'SOF_ExportUserCert',
-  getVersion = 'SOF_GetVersion',
-  getUserList = 'SOF_GetUserList',  // 用户列表
+  getCertEntity = 'SOF_GetCertEntity',  // 获取证书唯一标识
   getCertInfo = 'SOF_GetCertInfo',  // 获取证书信息
+  getDeviceInfo = 'GetDeviceInfo',  // 设备信息
+  getSignCert = 'SOF_ExportUserCert',
+  getUserList = 'SOF_GetUserList',  // 用户列表
+  getVersion = 'SOF_GetVersion',
   signData = 'SOF_SignData',  // 签名
   validateCert = 'SOF_ValidateCert',  // 验证证书有效性
   verifySignedData = 'SOF_VerifySignedData',  // 验证数据签名
