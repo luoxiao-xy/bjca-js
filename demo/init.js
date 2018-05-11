@@ -8,22 +8,6 @@ function initCA(init) {
   onUsbkeyInsert(ca)
 
   window.ca = ca
-
-
-  // ca.on('onUsbkeyChange', (msg) => {
-  //   if (msg === 'remove') {
-  //     updateSelect(null)
-  //     document.querySelector('#loginForm').reset()
-  //   }
-  //   else if (msg === 'insert') {
-  //     console.log(this)
-  //     ca.getUserList().then(updateSelect)
-  //   }
-  // })
-
-  // // @DEBUG 取消绑定事件
-  // setTimeout(() => ca.off('onUsbkeyChange'), 25000)
-
 }
 
 function subscribeEvent(ca) {
