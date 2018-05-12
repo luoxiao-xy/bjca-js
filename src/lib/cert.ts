@@ -33,3 +33,16 @@ export function parseCertList(str: string): UserInfo[] {
   return ret
 }
 
+
+// throw error if invalid
+export function validatePIN(pin: string | number, minLen: number = 4, maxLen: number = 16): void {
+  if (typeof pin === 'string') {
+    const len = pin.length
+
+    if (len < 4) {
+      throw new Error(`PIN minimum length is ${minLen} `)
+    }
+    return
+  }
+
+}

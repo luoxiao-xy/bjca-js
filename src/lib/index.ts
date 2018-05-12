@@ -219,7 +219,7 @@ export class Bjca {
     return this.sendMsg(SrvMethod.signData, [certId, plain])
   }
 
-  changeUserPIN(certId: CertId, oldStr: string, newStr: string): Promise<boolean> {
+  changeUserPIN(certId: CertId, oldStr: string | number, newStr: string | number): Promise<boolean> {
     return this.sendMsg(SrvMethod.changeUserPIN, [certId, oldStr, newStr])
       .then(ret => ret === 'true' ? true : false)
   }
