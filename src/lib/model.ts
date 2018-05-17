@@ -58,7 +58,7 @@ export interface WsEvent {
   action: Actions | SrvEvent
   msg?: string
   msgId?: MsgId
-  payload?: WsRecvData | WsRecvData | Error,
+  payload?: WsRecvData | Error,
 
 }
 
