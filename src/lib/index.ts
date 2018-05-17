@@ -32,8 +32,12 @@ let globalMsgId: MsgId = 0
 
 export class Bjca {
   // public subject: Subject<CaEvent>
-  public subject: Subject<WsEvent>
-  public options: WsOpts
+  subject: Subject<WsEvent>
+  options: WsOpts
+  private wsSubject: RxWebsocketSubject<WsRecvData> | null
+  private wsSub: Subscription | null
+  private msgQueue = <Map<MsgId, MsgQueueCb>> new Map()  // request from client
+  private keppAliveSub: Subscription | null
 
   constructor(options?: InitialWsOpts) {
     this.options = this.parseOptions(options)
@@ -43,10 +47,6 @@ export class Bjca {
     this.subject = new Subject()
   }
 
-  private wsSubject: RxWebsocketSubject<WsRecvData> | null
-  private wsSub: Subscription | null
-  private msgQueue = <Map<MsgId, MsgQueueCb>> new Map()  // request from client
-  private keppAliveSub: Subscription | null
 
   parseOptions(options?: InitialWsOpts) {
     const opts = <WsOpts> options ? { ...initialWsOpts, ...options } : { ...initialWsOpts }

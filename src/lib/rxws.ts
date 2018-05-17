@@ -6,6 +6,11 @@ import { WebSocketSubject, WebSocketSubjectConfig } from 'rxjs/websocket'
 // https://stackoverflow.com/questions/38108814/rx-observable-websocket-immediately-complete-after-reconnect
 export default class RxWebsocketSubject<T> extends Subject<T> {
   public connectionStatus: Observable<boolean>
+  private connectionObserver: Observer<boolean> | null
+  private reconnectionObservable: Observable<number> | null
+  private socketSub: WebSocketSubject<any> | null
+  private wsSubjectConfig: WebSocketSubjectConfig<any>
+
 
   constructor(
     private url: string,
@@ -57,11 +62,6 @@ export default class RxWebsocketSubject<T> extends Subject<T> {
       }
     })
   }
-
-  private connectionObserver: Observer<boolean> | null
-  private reconnectionObservable: Observable<number> | null
-  private socketSub: WebSocketSubject<any> | null
-  private wsSubjectConfig: WebSocketSubjectConfig<any>
 
 
   defaultResultSelector(e: MessageEvent) {
