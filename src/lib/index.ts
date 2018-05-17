@@ -127,7 +127,7 @@ export class Bjca {
           ...initialWsEvent,
           action: Actions.exception,
           msg: 'getUserList()',
-          payload: err,
+          err,
         })
         return []
       })

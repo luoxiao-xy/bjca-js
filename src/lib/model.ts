@@ -56,10 +56,10 @@ export const enum Actions {
 
 export interface WsEvent {
   action: Actions | SrvEvent
+  err?: Error
   msg?: string
   msgId?: MsgId
-  payload?: WsRecvData | Error,
-
+  payload?: WsRecvData
 }
 
 // ws服务端调用方法
