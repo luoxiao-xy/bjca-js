@@ -348,6 +348,9 @@ export class Bjca {
 
   private parseSendOpts(methodName: string, args?: SendArgs): WsSendData {
     globalMsgId += 1
+    if (! Number.isSafeInteger(globalMsgId)) {
+      globalMsgId = 1
+    }
     const ret = <WsSendData> {
       xtx_func_name: methodName,
       // call_cmd_id: 'i_' + msgId,
