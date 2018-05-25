@@ -10,9 +10,9 @@
     "SM2",
     "SM4",
     "rxjs",
-    "鏁板瓧璇佷功",
-    "鏁板瓧璁よ瘉",
-    "鍥藉瘑"
+    "数字证书",
+    "数字认证",
+    "国密"
   ],
   "engines": {
     "node": ">=8.10.0"
@@ -71,7 +71,7 @@
     "rollup-plugin-commonjs": "^9.1.0",
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-uglify": "^3.0.0",
-    "rxjs": "^6.1.0",
+    "rxjs": "^6.2.0",
     "source-map-support": "^0.5.4",
     "ts-node": "^6.0.5",
     "tslint": "^5.10.0",
@@ -79,7 +79,7 @@
     "typescript": "^2.8.1"
   },
   "peerDependencies": {
-    "rxjs": "^6.1.0"
+    "rxjs": "^6.2.0"
   },
   "scripts": {
     "bp:add": "git remote add bp https://github.com/waitingsong/npm-base",
