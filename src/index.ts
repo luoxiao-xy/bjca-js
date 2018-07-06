@@ -1,3 +1,3 @@
-import { init } from './lib/index'
+export { init } from './lib/index'
+export * from './lib/model'
 
-export { init }
