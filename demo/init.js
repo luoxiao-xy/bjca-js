@@ -11,7 +11,7 @@ function initCA(init) {
 }
 
 function subscribeEvent(ca) {
-  ca.subject.subscribe(ev => {
+  ca.eventObb.subscribe(ev => {
     console.log('outer ev:', ev)
 
     if (ev.action === 'usbkeyChange') {
@@ -26,9 +26,10 @@ function subscribeEvent(ca) {
 }
 
 function onUsbkeyInsert(ca) {
-  ca.getUserList()
-    .then(arr => updateSelect(arr))
-    .catch(console.error)
+  ca.getUserList().subscribe(
+    updateSelect,
+    console.error,
+  )
 }
 
 function onUsbkeyRemove(ca) {
@@ -58,6 +59,9 @@ function updateSelect(list) {
 
 
 function login(form) {
+  const { forkJoin } = rxjs
+  const { catchError, concatMap, take, tap, mergeMap } = rxjs.operators
+
 
   // 1. 获取服务器证书
   const serverCert = 'MIIE9TCCA92gAwIBAgIKIAAAAAAAARJTiDANBgkqhkiG9w0BAQUFADA6MQswCQYDVQQGEwJDTjENMAsGA1UECgwEQkpDQTENMAsGA1UECwwEQkpDQTENMAsGA1UEAwwEQkpDQTAeFw0wOTEwMjExNjAwMDBaFw0xMTEwMDExNTU5NTlaMEgxCzAJBgNVBAYTAkNOMQ0wCwYDVQQKDARCSkNBMQ0wCwYDVQQLDARCSkNBMRswGQYDVQQDDBLmnI3liqHlmajor4HkuabkuowwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAKUPfJUjN1t0ssHbRrpB9qQ0FyS64cxhlR93+jMPsKCiAYG7pn3NTveFBTFTSuR8Bmt3vUWU2g6IJba7WMEnHRdB9IoFW/0BMLlzAhXKAG7BHBEzqY6VsFr5Kstw1cME8zfTjZqXreL7ha4IJM02VF831xSe2t7+3GKVot/X9xcrAgMBAAGjggJxMIICbTAfBgNVHSMEGDAWgBTBzihoGF2OgzPxlaoIwz2KCJqddjAMBgNVHQ8EBQMDB/gAMCsGA1UdEAQkMCKADzIwMDkxMDIyMDAwMDAwWoEPMjAxMTEwMDEyMzU5NTlaMAkGA1UdEwQCMAAwgZkGA1UdHwSBkTCBjjBWoFSgUqRQME4xCzAJBgNVBAYTAkNOMQ0wCwYDVQQKDARCSkNBMQ0wCwYDVQQLDARCSkNBMQ0wCwYDVQQDDARCSkNBMRIwEAYDVQQDEwljYTJjcmwzNDkwNKAyoDCGLmh0dHA6Ly9sZGFwLmJqY2Eub3JnLmNuL2NybC9iamNhL2NhMmNybDM0OS5jcmwwEQYJYIZIAYb4QgEBBAQDAgD/MCoGC2CGSAFlAwIBMAkKBBtodHRwOi8vYmpjYS5vcmcuY24vYmpjYS5jcnQwGgYFKlYLBwkEEUpKMDExMDAwMTAwMDE1MTEyMB0GCGCGSAGG+EQCBBFKSjAxMTAwMDEwMDAxNTExMjAbBggqVoZIAYEwAQQPMDExMDAwMTAwMDE1MTEyMB4GBipWCwcBCAQUMUJASkowMTEwMDAxMDAwMTUxMTIwgbAGA1UdIASBqDCBpTA1BgkqgRwBxTiBFQEwKDAmBggrBgEFBQcCARYaaHR0cDovL3d3dy5iamNhLm9yZy5jbi9jcHMwNQYJKoEcAcU4gRUCMCgwJgYIKwYBBQUHAgEWGmh0dHA6Ly93d3cuYmpjYS5vcmcuY24vY3BzMDUGCSqBHAHFOIEVAzAoMCYGCCsGAQUFBwIBFhpodHRwOi8vd3d3LmJqY2Eub3JnLmNuL2NwczANBgkqhkiG9w0BAQUFAAOCAQEAfNLOoVZkvg75NP7bZKbnvcr6rp8qxTK3X5JcyrUFrFMz324DYaY5MpN39V3+XDwklmy+1c///T/1em4lDavrZVY0PLAFWZPDz/C2E9/vHYkBX4GhkB+K1FuXp8rPSfipvMGFrTpd1071UZK/ncxrQRskIdJDfQWLn0He4hBHrQNu/4HpBqrDHM/EU470YguVXEOAfoIr5wpi6xt37C/9u1zv0RLdkeXonFCYb5iUsVsEDsIEYWSMItxBYu7zJgRhTRbNI9QHPNcFOpUoFwxRe4Ie4ZszUZRUxhtfI9I539qOt6/i4Hvv9P4mBypr15o+aG3oVjt+CbfKYGZBLorCoQ=='
@@ -89,66 +93,98 @@ function login(form) {
     return false
   }
 
-  ca.verifyUserPIN(pdata.certId, pwd)
-    .then(ret => { // 验证服务器证书签名
-      if (ret) {
-        return ca.verifySignedData(serverCert, random, encodedText)
-      }
-      else {
+  const verifyUserPIN$ = ca.verifyUserPIN(pdata.certId, pwd).pipe(
+    tap(valid => {
+      if (! valid) {
         throw new Error('验证用户证书口令失败')
       }
-    })
-    .then(ret => { // 获取用户签名证书
-      if (ret) {
-        return ca.getSignCert(pdata.certId)
-      }
-      else {
-        throw new Error('验证服务器证书签名失败')
-      }
-    })
-    .then(cert => { // 生成随机数
-      if (cert) {
-        pdata.userCert = cert
-        return ca.genRandom()
-      }
-      else {
-        throw new Error('获取用户签名证书失败')
-      }
-    })
-    .then(str => {  // 对随机数签名
+    }),
+  )
+  const genRandom$ = ca.genRandom().pipe( // 生成随机数
+    tap(str => {
       if (str) {
         pdata.userRandom = str
-        return ca.signData(pdata.certId, pdata.userRandom)
       }
       else {
         pdata.userRandom = ''
         pdata.userEncodedRandom = ''
         throw new Error('生成随机数失败')
       }
-    })
-    .then(str => {  // 获取证书唯一标识
-      if (str) {
-        return ca.getCertEntity(pdata.userCert)
+    }),
+  )
+  const verifySignedData$ = ca.verifySignedData(serverCert, random, encodedText).pipe( // 验证服务器证书签名
+    tap(valid => {
+      if (!valid) {
+        throw new Error('验证服务器证书签名失败')
       }
-      else {
-        pdata.userRandom = ''
-        pdata.userEncodedRandom = ''
-        throw new Error('签名随机数失败')
-      }
-    })
-    .then(certUniqueId => { // 获取证书有效期
-      pdata.certUniqueId = certUniqueId
-      return ca.getCertInfo(pdata.userCert, [11, 12])
-    })
-    .then(info => {
-      validateCertExpiry(info)  // 验证证书有效期
-      return submit(pdata) // 提交
-    })
-    .catch(err => {
-      console.error(err)
-      alert(err)
-    })
+    }),
+  )
 
+  forkJoin(
+    verifyUserPIN$,
+    verifySignedData$,
+    genRandom$,
+  )
+    .pipe(
+      mergeMap(() => {
+        return ca.verifySignedData(serverCert, random, encodedText).pipe( // 验证服务器证书签名
+          tap(valid => {
+            if (!valid) {
+              throw new Error('验证服务器证书签名失败')
+            }
+          }),
+        )
+      }),
+      mergeMap(() => {
+        return ca.getSignCert(pdata.certId).pipe( // 获取用户签名证书
+          tap(cert => {
+            if (cert) {
+              pdata.userCert = cert
+            }
+            else {
+              throw new Error('获取用户签名证书失败')
+            }
+          }),
+        )
+      }),
+      mergeMap(() => {
+        // 对随机数签名
+        return ca.signData(pdata.certId, pdata.userRandom).pipe(
+          tap(str => {
+            if (!str) {
+              pdata.userRandom = ''
+              pdata.userEncodedRandom = ''
+              throw new Error('签名随机数失败')
+            }
+          }),
+        )
+      }),
+      mergeMap(() => {
+        // 获取证书唯一标识
+        return ca.getCertEntity(pdata.userCert).pipe(
+          tap(certUniqueId => {
+            pdata.certUniqueId = certUniqueId
+          }),
+        )
+      }),
+      mergeMap(() => {
+        // 获取证书有效期
+        return ca.getCertInfo(pdata.userCert, [11, 12]).pipe(
+          tap(console.log),
+          tap(validateCertExpiry), // 验证证书有效期
+        )
+      }),
+  )
+    .subscribe(
+      () => {
+        submit(pdata)
+      },
+      err => {
+        console.error(err)
+        alert(err)
+      },
+  )
+  return
 
 }
 
