@@ -3,14 +3,14 @@ require.config({
   paths:   {
     'bjca': 'bjca.umd.min',
     'jquery': '../demo/jquery-3.3.1.min',
-    'moment': '../demo/moment-with-locales.min',
+    'dayjs': '../demo/dayjs.min',
   },
 });
 
 
-requirejs(['bjca', 'moment', 'jquery'], function(Bjca, moment, $) {
+requirejs(['bjca', 'dayjs', 'jquery'], function(Bjca, dayjs, $) {
   window.$ = $
-  window.moment = moment
+  window.dayjs = dayjs
   initCA(Bjca.init)
 });
 

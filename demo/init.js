@@ -192,9 +192,26 @@ function validateCertExpiry(info) {
   if (! info.not_before || ! info.not_after) {
     throw new Error('证书有效期为空')
   }
-  const now = moment()
-  const start = moment(info.not_before, 'YYYYMMDDHHmmss')
-  const end = moment(info.not_after, 'YYYYMMDDHHmmss')
+  // YYYYMMDDHHmmss
+  const startStr = info.not_before
+  const endStr = info.not_after
+  const now = dayjs()
+  const start = dayjs(new Date(
+    startStr.slice(0, 4), // YYYY
+    startStr.slice(4, 6) - 1, // MM
+    startStr.slice(6, 8), // DD
+    startStr.slice(8, 10),  // HH
+    startStr.slice(10, 12),  // mm
+    startStr.slice(12, 14)  // ss
+  ))
+  const end = dayjs(new Date(
+    endStr.slice(0, 4),
+    endStr.slice(4, 6) - 1,
+    endStr.slice(6, 8),
+    endStr.slice(8, 10),
+    endStr.slice(10, 12),
+    endStr.slice(12, 14)
+  ))
 
   if (now < start) {
     throw new Error('证书有效期尚未开始')
@@ -202,7 +219,7 @@ function validateCertExpiry(info) {
   if (now >= end) {
     throw new Error('证书已过期 请尽快到北京数字证书认证中心办理证书更新手续！')
   }
-  const diff = Math.floor(moment.duration(end.diff(now)).as('days'))
+  const diff = Math.floor(end.diff(now, 'day'))
 
   if (diff <= 60) {
     alert("您的证书距离过期还有：" + diff + "天，请尽快到北京数字证书认证中心办理证书更新手续！")
