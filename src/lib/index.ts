@@ -73,11 +73,21 @@ export class Bjca {
     this.wsSub = this.wsSubject.subscribe(
       data => this.handleMsgEventData(data),
 
-      data => this.subject.next({
-        ...initialWsEvent,
-        action: Actions.wsClosedException,
-        payload: data,
-      }),
+      (err: Error) => {
+        if (err && err.message && err.message.includes('net::ERR_CONNECTION_REFUSED')) {
+          this.subject.next({
+            ...initialWsEvent,
+            action: Actions.wsNoneAvailable,
+          })
+        }
+        else {
+          this.subject.next({
+            ...initialWsEvent,
+            action: Actions.wsClosedException,
+            err,
+          })
+        }
+      },
 
       () => this.subject.next({
         ...initialWsEvent,

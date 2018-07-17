@@ -1,5 +1,5 @@
-import { interval, Observable, Observer, Subject } from 'rxjs'
-import { distinctUntilChanged, share, takeWhile } from 'rxjs/operators'
+import { empty, interval, Observable, Observer, Subject } from 'rxjs'
+import { catchError, distinctUntilChanged, share, takeWhile } from 'rxjs/operators'
 import { WebSocketSubject, WebSocketSubjectConfig } from 'rxjs/websocket'
 
 
@@ -75,8 +75,8 @@ export default class RxWebsocketSubject<T> extends Subject<T> {
   connect() {
     this.socketSub = new WebSocketSubject(this.wsSubjectConfig)
     this.socketSub.subscribe(
-      msg => { this.next(msg) },
-      (error: Event) => {
+      msg => this.next(msg),
+      (err: Event) => {
         this.socketSub || this.reconnect()
       },
     )
@@ -88,16 +88,20 @@ export default class RxWebsocketSubject<T> extends Subject<T> {
         takeWhile((v, index) => {
           return index < this.reconnectAttempts && !this.socketSub
         }),
+        catchError(err => {
+          console.info('retry connect by reconnectionObservable()', err)
+          return empty()
+        }),
       )
 
     this.reconnectionObservable.subscribe(
-      () => this.connect() ,
-      err => console.info(err),
+      () => this.connect(),
+      () => {},
       () => {
         this.reconnectionObservable = null
         if (!this.socketSub) {
-          this.complete()
           this.connectionObserver && this.connectionObserver.complete()
+          this.error(new Error('net::ERR_CONNECTION_REFUSED'))
         }
       },
     )
