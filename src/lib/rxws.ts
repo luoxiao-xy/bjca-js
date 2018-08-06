@@ -77,7 +77,12 @@ export default class RxWebsocketSubject<T> extends Subject<T> {
     this.socketSub.subscribe(
       msg => this.next(msg),
       (err: Event) => {
-        this.socketSub || this.reconnect()
+        if (! this.socketSub) {
+          this.reconnect()
+        }
+        else {
+          this.error(err)
+        }
       },
     )
   }
