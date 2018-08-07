@@ -14,6 +14,7 @@
   "engines": {
     "node": ">=8.10.0"
   },
+  "bin": {},
   "browser": "./dist/bjca.esm.js",
   "es2015": "./dist/bjca.esm.js",
   "main": "./dist/index.cjs.js",
