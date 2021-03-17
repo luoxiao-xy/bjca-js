@@ -124,7 +124,7 @@ if (pkg.browser) {
       output: {
         amd: { id: name },
         banner,
-        file: `${targetDir}/${name}.umd.min.js`,
+        file: `${targetDir}/bjca.umd.min.js`,
         format: 'umd',
         globals,
         name,
