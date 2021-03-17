@@ -33,6 +33,7 @@ export interface UserInfo {
 export interface WsOpts {
   host: string
   ports: number[]
+  path: string
   keepAliveInterval: number
 }
 

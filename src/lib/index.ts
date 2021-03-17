@@ -67,7 +67,7 @@ export class Bjca {
 
   connect(): void {
     this.disconnect()
-    this.wsSubject = new RxWebsocketSubject(`${this.options.host}:${this.options.ports[0]}`)
+    this.wsSubject = new RxWebsocketSubject(`${this.options.host}:${this.options.ports[0]}${this.options.path}`)
     this.subject.next({ ...initialWsEvent, action: Actions.wsConnected })
 
     this.wsSub = this.wsSubject.subscribe(
