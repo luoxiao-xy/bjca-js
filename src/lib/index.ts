@@ -8,6 +8,7 @@ import {
   switchMap,
   take,
   timeout,
+  toArray,
 } from 'rxjs/operators'
 
 import { parseCertList } from './cert'
@@ -377,9 +378,12 @@ export class Bjca {
       for (let i = 0, len = args.length; i < len; i++) {
         ret['param_' + (i + 1)] = args[i]
       }
+      ret.param = args
     }
     else {
       ret.param_1 = args
+      ret.param = []
+      ret.param.push(args)
     }
 
     return ret
