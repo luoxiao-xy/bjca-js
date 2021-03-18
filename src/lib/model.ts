@@ -17,8 +17,8 @@ export interface WsSendData {
   xtx_func_name: string
   call_cmd_id: string // string of msgId
   URL?: string
-  param?: (string | number)[]
-  [param: string]: string | number | void | (string | number)[]
+  param?: Array<string | number>
+  [param: string]: string | number | void | Array<string | number>
 }
 
 export interface WsRecvData {

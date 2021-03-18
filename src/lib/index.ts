@@ -8,7 +8,6 @@ import {
   switchMap,
   take,
   timeout,
-  toArray,
 } from 'rxjs/operators'
 
 import { parseCertList } from './cert'
